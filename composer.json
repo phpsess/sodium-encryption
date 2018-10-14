@@ -1,6 +1,6 @@
 {
-    "name": "phpsess/phpseclib-encryption",
-    "description": "A PHPSecLib encryption driver for PHPSess",
+    "name": "phpsess/sodium-encryption",
+    "description": "A Sodium encryption driver for PHPSess",
     "type": "library",
     "version": "0.0.1-beta",
     "minimum-stability": "dev",
