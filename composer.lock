@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e6d960ca296ab6c01444676ecfc9793",
+    "content-hash": "da4b508bc85eacab166c48f2ad2a0e35",
     "packages": [
         {
             "name": "phpsess/session-handler",
@@ -12,21 +12,18 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpsess/session-handler.git",
-                "reference": "fe28f4a956a12dc9a7994881214bcdd71d7144ca"
+                "reference": "65d617574d67fc1c01ca346329473aed964a2e2d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpsess/session-handler/zipball/fe28f4a956a12dc9a7994881214bcdd71d7144ca",
-                "reference": "fe28f4a956a12dc9a7994881214bcdd71d7144ca",
+                "url": "https://api.github.com/repos/phpsess/session-handler/zipball/65d617574d67fc1c01ca346329473aed964a2e2d",
+                "reference": "65d617574d67fc1c01ca346329473aed964a2e2d",
                 "shasum": ""
             },
             "require": {
-                "ext-json": "*",
-                "ext-openssl": "*",
                 "php": ">=7.1"
             },
             "require-dev": {
-                "mikey179/vfsstream": "^1.6",
                 "phpmd/phpmd": "^2.6",
                 "phpsess/mock-storage": "dev-master",
                 "phpsess/openssl-encryption": "dev-master",
@@ -51,7 +48,7 @@
                 }
             ],
             "description": "A security-first PHP session handler",
-            "time": "2018-10-13T21:30:15+00:00"
+            "time": "2018-10-14T02:43:00+00:00"
         }
     ],
     "packages-dev": [
@@ -2930,7 +2927,7 @@
     "platform": {
         "ext-json": "*",
         "php": ">=7.1",
-        "ext-sodium": "^7.2"
+        "ext-sodium": "*"
     },
     "platform-dev": []
 }

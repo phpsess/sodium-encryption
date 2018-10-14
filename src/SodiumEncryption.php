@@ -20,10 +20,8 @@ class SodiumEncryption implements EncryptionInterface
      * SodiumEncryption constructor.
      *
      * @param  string $appKey              Defines the App Key.
-     * @param  string $hashAlgorithm       Defines the algorithm used to create hashes.
-     * @param  string $encryptionAlgorithm Defines the algorithm to encrypt/decrypt data.
      */
-    public function __construct(string $appKey, string $hashAlgorithm = 'sha512', string $encryptionAlgorithm = 'aes128')
+    public function __construct(string $appKey)
     {
         $binaryHash = sodium_crypto_generichash($appKey);
         $this->appKey = sodium_bin2hex($binaryHash);
