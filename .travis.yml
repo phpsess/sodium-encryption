@@ -15,9 +15,9 @@ before_script:
       sudo apt install build-essential git -y &&
       git clone -b stable https://github.com/jedisct1/libsodium.git &&
       cd libsodium &&
-      ./configure &&
-      make check &&
-      make install &&
+      sudo ./configure &&
+      sudo make check &&
+      sudo make install &&
       cd .. &&
       pecl install libsodium; fi
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
