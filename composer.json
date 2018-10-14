@@ -1,0 +1,42 @@
+{
+    "name": "phpsess/phpseclib-encryption",
+    "description": "A PHPSecLib encryption driver for PHPSess",
+    "type": "library",
+    "version": "0.0.1-beta",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "ext-json": "*",
+        "php": ">=7.1",
+        "phpsess/session-handler": "*",
+        "ext-sodium": "*"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ayrton Fidelis",
+            "email": "ayrton.vargas33@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "PHPSess\\Encryption\\": "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7",
+        "phpstan/phpstan": "^0.10.3",
+        "phpmd/phpmd": "^2.6",
+        "squizlabs/php_codesniffer": "^3.3"
+    },
+    "scripts": {
+        "fix": "phpcbf src",
+
+        "build": "composer test && composer phpstan && composer phpmd && composer phpcs",
+
+        "test": "phpunit",
+        "phpstan": "phpstan analyse",
+        "phpmd": "phpmd src text cleancode,codesize,controversial,design,naming,unusedcode",
+        "phpcs": "phpcs"
+    }
+}
