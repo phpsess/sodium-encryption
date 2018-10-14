@@ -15,8 +15,7 @@ before_script:
       sudo echo "deb-src http://ppa.launchpad.net/chris-lea/libsodium/ubuntu precise main" >> /etc/apt/sources.list &&
       sudo apt update &&
       sudo apt install libsodium-dev -y &&
-      pecl install libsodium
-    ; fi
+      pecl install libsodium; fi
   - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
   - chmod +x ./cc-test-reporter
   - ./cc-test-reporter before-build
@@ -27,5 +26,4 @@ script:
   - >
     if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then
       ./cc-test-reporter format-coverage build/coverage/clover.xml --input-type clover &&
-      ./cc-test-reporter upload-coverage -r $CC_TEST_REPORTER_ID
-    ; fi
+      ./cc-test-reporter upload-coverage -r $CC_TEST_REPORTER_ID; fi
