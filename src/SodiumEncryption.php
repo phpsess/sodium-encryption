@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace PHPSess\Encryption;
 
+use PHPSess\Exception\BadSessionContentException;
+use PHPSess\Exception\UnableToEncryptException;
 use PHPSess\Interfaces\EncryptionInterface;
 use PHPSess\Exception\UnableToDecryptException;
 use Exception;
+use stdClass;
 
 class SodiumEncryption implements EncryptionInterface
 {
@@ -66,6 +69,7 @@ class SodiumEncryption implements EncryptionInterface
      * Decrypts the session data.
      *
      * @throws UnableToDecryptException
+     * @throws BadSessionContentException
      * @param  string $sessionId   The session id.
      * @param  string $sessionData The encrypted session data.
      * @return string The decrypted session data.
@@ -76,25 +80,15 @@ class SodiumEncryption implements EncryptionInterface
             return '';
         }
 
-        $encryptedData = json_decode($sessionData);
-
-        if (json_last_error() !== JSON_ERROR_NONE) {
-            throw new UnableToDecryptException();
-        }
-
-        try {
-            $nonce = sodium_hex2bin($encryptedData->nonce);
-            $data = sodium_hex2bin($encryptedData->data);
-        } catch (Exception $exception) {
-            throw new UnableToDecryptException();
-        }
+        $data = $this->parseEncryptedData($sessionData);
 
         $encryptionKey = $this->getEncryptionKey($sessionId);
 
-        $decryptedData = sodium_crypto_secretbox_open($data, $nonce, $encryptionKey);
+        $decryptedData = sodium_crypto_secretbox_open($data->data, $data->nonce, $encryptionKey);
 
         if ($decryptedData === false) {
-            throw new UnableToDecryptException();
+            $errorMessage = 'Could not decrypt the session data. Was it tampered or just corrupted?';
+            throw new UnableToDecryptException($errorMessage);
         }
 
         return $decryptedData;
@@ -112,5 +106,51 @@ class SodiumEncryption implements EncryptionInterface
         $binaryHash = sodium_crypto_generichash($hashContent);
         $hash = sodium_bin2hex($binaryHash);
         return substr($hash, 0, SODIUM_CRYPTO_SECRETBOX_KEYBYTES);
+    }
+
+    /**
+     * @todo Create a proper class instead of using stdClass
+     * @throws BadSessionContentException
+     * @param string $data
+     * @return stdClass
+     */
+    private function parseEncryptedData(string $data): stdClass
+    {
+        $data = json_decode($data);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            $errorMessage = 'The session content is not parsable as JSON.';
+            throw new BadSessionContentException($errorMessage);
+        }
+
+        if (empty($data->nonce)) {
+            $errorMessage = 'The session content has no "nonce".';
+            throw new BadSessionContentException($errorMessage);
+        }
+
+        if (!isset($data->data)) {
+            $errorMessage = 'The session content has no "data" field.';
+            throw new BadSessionContentException($errorMessage);
+        }
+
+        try {
+            $nonce = sodium_hex2bin($data->nonce);
+        } catch (Exception $exception) {
+            $errorMessage = 'The nonce could not be converted from hexadecimal to binary.';
+            throw new BadSessionContentException($errorMessage);
+        }
+
+        try {
+            $data = sodium_hex2bin($data->data);
+        } catch (Exception $exception) {
+            $errorMessage = 'The data could not be converted from hexadecimal to binary.';
+            throw new BadSessionContentException($errorMessage);
+        }
+
+        $session = new stdClass();
+        $session->data = $data;
+        $session->nonce = $nonce;
+
+        return $session;
     }
 }
